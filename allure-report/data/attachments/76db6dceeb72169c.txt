@@ -1,0 +1,3 @@
+Navigating to: https://portal.qat.anddone.com/#/login
+Logging in with username: invaliduser
+Current URL: https://portal.qat.anddone.com/#/login
