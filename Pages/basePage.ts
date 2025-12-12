@@ -1,4 +1,4 @@
-// pages/basePage.ts
+// Pages/basePage.ts
 import { Page, Locator, expect } from '@playwright/test';
 import { CommonUtils } from '../utils/commonUtils';
 

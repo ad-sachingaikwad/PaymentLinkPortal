@@ -94,7 +94,7 @@ export class LoginPage extends BasePage {
 
 ```typescript
 import { test, expect } from '@playwright/test';
-import { POManager } from '../pages/POManager';
+import { POManager } from '../Pages/POManager';
 
 test.describe('My Tests', () => {
   let pom: POManager;
