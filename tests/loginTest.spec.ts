@@ -1,6 +1,6 @@
 // tests/login.spec.ts
 import { test, expect } from '@playwright/test';
-import { POManager } from '../pages/POManager';
+import { POManager } from '../Pages/POManager';
 import { CURRENT_ENV } from './config/environment';
 import loginData from '../testData/LoginTestData.json';
 
@@ -31,7 +31,7 @@ test.describe('Login Tests', () => {
     console.log(`Page title: ${title}`);
   });
 
-  test.only('Successful login with valid credentials @smoke @regression', async ({ page }) => {
+  test('Successful login with valid credentials @smoke @regression', async ({ page }) => {
     // Login using default test data user
     await pom.loginPage.loginAsDefaultUser();
     
