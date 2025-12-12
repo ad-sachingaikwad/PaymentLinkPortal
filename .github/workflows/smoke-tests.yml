@@ -1,0 +1,42 @@
+# Run smoke tests only on every push
+name: Smoke Tests
+
+on:
+  push:
+    branches: [ main, master, develop, feature/* ]
+
+jobs:
+  smoke-test:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright Chromium
+      run: npx playwright install --with-deps chromium
+    
+    - name: Run smoke tests
+      run: npx playwright test --grep @smoke --project=chromium
+      env:
+        TEST_ENV: https://portal.qat.anddone.com/#/login
+    
+    - name: Upload test results on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: smoke-test-results
+        path: |
+          playwright-report/
+          screenshots/
+        retention-days: 7

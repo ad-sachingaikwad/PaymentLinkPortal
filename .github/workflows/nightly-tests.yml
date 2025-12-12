@@ -1,0 +1,57 @@
+# Scheduled nightly regression tests
+name: Nightly Regression Tests
+
+on:
+  schedule:
+    # Run every night at 2 AM UTC (adjust timezone as needed)
+    - cron: '0 2 * * *'
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  nightly-tests:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+        environment: [QAT, UAT]
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps ${{ matrix.browser }}
+    
+    - name: Run regression tests
+      run: npx playwright test --grep @regression --project=${{ matrix.browser }} --reporter=line,allure-playwright
+      env:
+        TEST_ENV: ${{ matrix.environment }}
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: regression-report-${{ matrix.browser }}-${{ matrix.environment }}
+        path: |
+          playwright-report/
+          allure-results/
+        retention-days: 30
+    
+    - name: Send notification on failure
+      if: failure()
+      run: |
+        echo "Regression tests failed for ${{ matrix.browser }} on ${{ matrix.environment }}"
+        # Add Slack/Email notification here if needed
