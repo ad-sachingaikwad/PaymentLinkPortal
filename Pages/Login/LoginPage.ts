@@ -1,6 +1,6 @@
 // Pages/Login/LoginPage.ts
 import { Page, Locator } from '@playwright/test';
-import { BasePage } from '../../pages/basePage';
+import { BasePage } from '../basePage';
 import { CURRENT_ENV } from '../../tests/config/environment';
 import loginData from '../../testData/LoginTestData.json';
 

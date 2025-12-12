@@ -1,6 +1,6 @@
 // pages/POManager.ts
 import { Page } from '@playwright/test';
-import { LoginPage } from '../Pages/Login/LoginPage';
+import { LoginPage } from './Login/LoginPage';
 import { CommonUtils } from '../utils/commonUtils';
 
 /**
